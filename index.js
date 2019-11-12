@@ -2,6 +2,8 @@ require("dotenv").config();
 const { WakaTimeClient, RANGE } = require("wakatime-client");
 const Octokit = require("@octokit/rest");
 
+const max = 5;
+
 const {
   GIST_ID: gistId,
   GH_TOKEN: githubToken,
@@ -26,7 +28,9 @@ async function updateGist(stats) {
   }
 
   const lines = [];
-  for (let i = 0; i < 5; i++) {
+  let len = stats.data.languages.length;
+  len = len > max ? max : len;
+  for (let i = 0; i < len; i++) {
     const data = stats.data.languages[i];
     const { name, percent, text: time } = data;
 
